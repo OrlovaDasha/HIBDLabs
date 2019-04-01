@@ -5,7 +5,7 @@ from src.ResultScheme import ResultScheme
 
 def generateConferecneParticipants(person):
     participantsCollection = []
-    for participant in person.conference_participants_collection:
+    for participant in person.participant_of_conference_collection:
         participantsCollection.append(result.Conference_participants(id=participant.id, person_id=person.id,
                                                                      conference_id=participant.conference_id))
     return participantsCollection
@@ -15,10 +15,11 @@ def generateNewPersonWithEmployeeFromMySql(person, maxEmployeeId):
     names = person.full_name.split(' ')
     employeeCollection = generateEmployeesFromMysql(person, maxEmployeeId)
     return result.Person_result(id=person.id, surname=names[0],
-                                name=names[1] if names.size() > 1 else None,
-                                patronymic=names[2] if names.size() > 2 else None,
-                                dateofbirth=person.dateofbirth,
-                                employeeCollection=employeeCollection,
+                                name=names[1] if len(names) > 1 else None,
+                                patronymic=names[2] if len(names) > 2 else None,
+                                dateofbirth=person.birth_date,
+                                placeofbirth="Unknown",
+                                employee_collection=employeeCollection,
                                 authors_collection=generateAuthors(person),
                                 reading_list_collection=generateReadingList(person),
                                 conference_participants_collection=generateConferecneParticipants(person))
@@ -99,6 +100,9 @@ def generatePulicationInfo(publisher):
 oracle = OracleScheme("oracle://first:12345@127.0.0.1:1521")
 mysql = MySqlScheme('mysql://root:12345@localhost/university_info')
 result = ResultScheme('oracle://result:PASS1@127.0.0.1:1521')
+
+mysql.clear()
+mysql.generate_data(100, 100)
 
 persons_oracle = oracle.oracle_config.session.query(oracle.Person_oracle).all()
 years_oracle = oracle.oracle_config.session.query(oracle.Year_oracle).all()

@@ -101,10 +101,10 @@ create table result (
 
 
 
-insert into person values (1, 'Ivanov', 'Ivan', 'Ivanovich', to_date('1997-02-03', 'yyyy-mm-dd'), 'Saint-Petersburg');
-insert into person values (2, 'Ivanov', 'Petr', 'Petrovich', to_date('1983-01-01', 'yyyy-mm-dd'), 'Moscow');
-insert into person values (3, 'Petrova', 'Maria', null, to_date('1998-01-01', 'yyyy-mm-dd'), 'Pskov');
-insert into person values (4, 'Sidorov', 'Aleksandr', 'Petrovich', to_date('2000-01-03', 'yyyy-mm-dd'), 'Moscow');
+insert into person values (100, 'Ivanov', 'Ivan', 'Ivanovich', to_date('1997-02-03', 'yyyy-mm-dd'), 'Saint-Petersburg');
+insert into person values (101, 'Ivanov', 'Petr', 'Petrovich', to_date('1983-01-01', 'yyyy-mm-dd'), 'Moscow');
+insert into person values (102, 'Petrova', 'Maria', null, to_date('1998-01-01', 'yyyy-mm-dd'), 'Pskov');
+insert into person values (103, 'Sidorov', 'Aleksandr', 'Petrovich', to_date('2000-01-03', 'yyyy-mm-dd'), 'Moscow');
 
 insert into year values (2017, to_date('2017-09-01', 'yyyy-mm-dd'), to_date('2018-05-31', 'yyyy-mm-dd') );
 
