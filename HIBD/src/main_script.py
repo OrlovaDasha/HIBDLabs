@@ -104,6 +104,9 @@ result = ResultScheme('oracle://result:PASS1@127.0.0.1:1521')
 mysql.clear()
 mysql.generate_data(100, 100)
 
+oracle.clear()
+oracle.generate_data(100, 100)
+
 persons_oracle = oracle.oracle_config.session.query(oracle.Person_oracle).all()
 years_oracle = oracle.oracle_config.session.query(oracle.Year_oracle).all()
 subdivision_oracle = oracle.oracle_config.session.query(oracle.Subdivision_oracle).all()
