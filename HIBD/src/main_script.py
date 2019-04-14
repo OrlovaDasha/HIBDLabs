@@ -113,6 +113,7 @@ subdivision_oracle = oracle.oracle_config.session.query(oracle.Subdivision_oracl
 subjects_oracle = oracle.oracle_config.session.query(oracle.Subject_oracle).all()
 programs_oracle = oracle.oracle_config.session.query(oracle.Program_oracle).all()
 group_oracle = oracle.oracle_config.session.query(oracle.Group_oracle).all()
+mark_oracle = oracle.oracle_config.session.query(oracle.Mark_oracle).all()
 specialization_oracle = oracle.oracle_config.session.query(oracle.Specialization_oracle).all()
 
 persons_mysql = mysql.my_sql_config.session.query(mysql.Person_mysql).all()
@@ -125,6 +126,10 @@ result_people = {}
 
 result.clear()
 
+for mark in mark_oracle:
+    result.result_config.session.add(
+        result.Mark_result(mark_value = mark.name, letter = mark.letter))
+    result.result_config.session.commit()
 for year in years_oracle:
     result.result_config.session.add(
         result.Year_result(year_name=year.name, startdate=year.startdate, enddate=year.enddate))
@@ -221,4 +226,5 @@ for student in students_collection:
         result.result_config.session.commit()
     except Exception:
         continue
+
 
