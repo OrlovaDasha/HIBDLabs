@@ -83,7 +83,7 @@ def generateStudentCollectionFromOracle(person):
         studentCollection.append(
             result.Student_result(id=student.id, person_id=student.person_id, group_id=student.group_id,
                                   type_of_study=student.type_of_study, form_of_study=student.form_of_study,
-                                  qualification=student.qualification))
+                                  qualification=student.qualification[:2]))
     return studentCollection
 
 
@@ -183,13 +183,15 @@ for conference in conference_info_mysql:
                                                                    place=conference.place))
     result.result_config.session.commit()
 
+
+students_collection = []
 maxEmployeeId = max(oracle.oracle_config.session.query(oracle.Employee_oracle).all(), key=lambda x: x.id).id
 for person in persons_oracle:
+    students_collection = students_collection + generateStudentCollectionFromOracle(person)
     result_people[person.id] = result.Person_result(id=person.id, surname=person.surname, name=person.name,
                                                     patronymic=person.patronymic, dateofbirth=person.dateofbirth,
                                                     placeofbirth=person.placeofbirth,
-                                                    employee_collection=generateEmployeesFromOracle(person),
-                                                    student_collection=generateStudentCollectionFromOracle(person))
+                                                    employee_collection=generateEmployeesFromOracle(person))
 
 for person in persons_mysql:
     maxEmployeeId = maxEmployeeId + 1
@@ -205,10 +207,18 @@ for person in persons_mysql:
                                                         employee_collection=generateEmployeesFromMysql(
                                                             person,
                                                             maxEmployeeId) + original_person.employee_collection,
-                                                        authors_collection=original_person.authors_collection,
-                                                        reading_list_collection=original_person.reading_list_collection,
-                                                        conference_participants_collection=original_person.conference_participants_collection)
+                                                        authors_collection=generateAuthors(person),
+                                                        reading_list_collection=generateReadingList(person),
+                                                        conference_participants_collection=generateConferecneParticipants(person))
 
 for person in result_people.values():
     result.result_config.session.add(person)
     result.result_config.session.commit()
+
+for student in students_collection:
+    try:
+        result.result_config.session.add(student)
+        result.result_config.session.commit()
+    except Exception:
+        continue
+
